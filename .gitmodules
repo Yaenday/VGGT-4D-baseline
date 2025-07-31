@@ -1,0 +1,22 @@
+[submodule "submodules/simple-knn"]
+	path = third_party/4DGaussians/submodules/simple-knn
+	url = https://gitlab.inria.fr/bkerbl/simple-knn.git
+
+[submodule "submodules/depth-diff-gaussian-rasterization"]
+	path = third_party/4DGaussians/submodules/depth-diff-gaussian-rasterization
+	url = https://github.com/ingra14m/depth-diff-gaussian-rasterization
+[submodule "SIBR_viewers"]
+	path = third_party/4DGaussians/SIBR_viewers
+	url = https://gitlab.inria.fr/sibr/sibr_core
+
+[submodule "croco"]
+	path = third_party/monst3r/croco
+	url = https://github.com/junyi42/croco
+
+[submodule "viser"]
+	path = third_party/monst3r/viser
+	url = https://github.com/junyi42/viser
+
+[submodule "LightGlue"]
+	path = third_party/vggt/LightGlue
+	url = https://github.com/cvg/LightGlue.git
