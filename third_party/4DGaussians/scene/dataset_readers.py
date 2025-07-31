@@ -175,12 +175,19 @@ def readColmapSceneInfo(path, images, eval, llffhold=8):
     ply_path = os.path.join(path, "sparse/0/points3D.ply")
     bin_path = os.path.join(path, "sparse/0/points3D.bin")
     txt_path = os.path.join(path, "sparse/0/points3D.txt")
+
+    # for debugging
+    if os.path.exists(ply_path):
+        print(f"PLY file found at {ply_path}, removing...")
+        os.remove(ply_path)
+
     if not os.path.exists(ply_path):
         print("Converting point3d.bin to .ply, will happen only the first time you open the scene.")
         try:
             xyz, rgb, _ = read_points3D_binary(bin_path)
         except:
             xyz, rgb, _ = read_points3D_text(txt_path)
+        storePly(ply_path, xyz, rgb)
 
     try:
         pcd = fetchPly(ply_path)
@@ -190,9 +197,13 @@ def readColmapSceneInfo(path, images, eval, llffhold=8):
     except:
         pcd = None
 
+    print(f"pcd: {pcd}, xyz: {xyz.shape}, rgb: {rgb.shape}")
+    
     # TODO: fix for the case of empty point cloud
     if pcd is None:
+
         num_pts = 100000
+        print(f"No pcd is not found, generating {num_pts} random points.")
         
         cam_pos = []
         for k in cam_extrinsics.keys():
