@@ -191,29 +191,29 @@ def readColmapSceneInfo(path, images, eval, llffhold=8):
         pcd = None
 
     # TODO: fix for the case of empty point cloud
-    # if pcd is None:
-    #     num_pts = 100000
+    if pcd is None:
+        num_pts = 100000
         
-    #     cam_pos = []
-    #     for k in cam_extrinsics.keys():
-    #         cam_pos.append(cam_extrinsics[k].tvec)
-    #     cam_pos = np.array(cam_pos)
-    #     min_cam_pos = np.min(cam_pos)
-    #     max_cam_pos = np.max(cam_pos)
-    #     mean_cam_pos = (min_cam_pos + max_cam_pos) / 2.0
-    #     cube_mean = (max_cam_pos - min_cam_pos) * 1.5
+        cam_pos = []
+        for k in cam_extrinsics.keys():
+            cam_pos.append(cam_extrinsics[k].tvec)
+        cam_pos = np.array(cam_pos)
+        min_cam_pos = np.min(cam_pos)
+        max_cam_pos = np.max(cam_pos)
+        mean_cam_pos = (min_cam_pos + max_cam_pos) / 2.0
+        cube_mean = (max_cam_pos - min_cam_pos) * 1.5
         
-    #     if True:        
-    #         xyz = np.random.random((num_pts, 3)) * nerf_normalization["radius"] * 3 - nerf_normalization["radius"] * 1.5
-    #         xyz = xyz + nerf_normalization["translate"]
-    #         print(f"Generating random point cloud ({num_pts})...")
-    #     else:
-    #         xyz = np.random.random((num_pts, 3)) * (max_cam_pos - min_cam_pos) * 3 - (cube_mean - mean_cam_pos)
-    #         print(f"Generating OUR point cloud ({num_pts})...")
+        if True:        
+            xyz = np.random.random((num_pts, 3)) * nerf_normalization["radius"] * 3 - nerf_normalization["radius"] * 1.5
+            xyz = xyz + nerf_normalization["translate"]
+            print(f"Generating random point cloud ({num_pts})...")
+        else:
+            xyz = np.random.random((num_pts, 3)) * (max_cam_pos - min_cam_pos) * 3 - (cube_mean - mean_cam_pos)
+            print(f"Generating OUR point cloud ({num_pts})...")
     
-    #     shs = np.random.random((num_pts, 3))
-    #     pcd = BasicPointCloud(points=xyz, colors=shs, normals=np.zeros((num_pts, 3)))
-    #     storePly(ply_path, xyz, SH2RGB(shs) * 255)
+        shs = np.random.random((num_pts, 3))
+        pcd = BasicPointCloud(points=xyz, colors=shs, normals=np.zeros((num_pts, 3)))
+        storePly(ply_path, xyz, SH2RGB(shs) * 255)
 
     scene_info = SceneInfo(point_cloud=pcd,
                            train_cameras=train_cam_infos,
