@@ -25,7 +25,7 @@ cd /root/autodl-tmp/hai/VGGT-4D-baseline/third_party/vggt
 cd /root/autodl-tmp/hai/VGGT-4D-baseline/third_party/4DGaussians
 
 python train.py --port 6017 \
-    -s /root/autodl-tmp/hai/VGGT-4D-baseline/data/vggt/nvidia/Balloon1  \
+    -s data/vggt/nvidia/Balloon1  \
     --expname "vggt/nvidia/Balloon1" \
     --configs arguments/nvidia/Balloon1.py
 
