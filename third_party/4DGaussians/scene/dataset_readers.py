@@ -110,7 +110,15 @@ def readColmapCameras(cam_extrinsics, cam_intrinsics, images_folder):
         else:
             assert False, "Colmap camera model not handled: only undistorted datasets (PINHOLE or SIMPLE_PINHOLE cameras) supported!"
 
-        image_path = os.path.join(images_folder, os.path.basename(extr.name))
+        # TODO: for fix process problem
+        if "monst3r" in images_folder:
+            if "nvidia" in images_folder:
+                image_path = os.path.join(images_folder, str(extr.id-1).zfill(3) + ".jpg")
+            elif "nerfie" in images_folder:
+                image_path = os.path.join(images_folder, str(extr.id).zfill(6) + ".png")
+            # print("[DEBUG] extr:", extr)
+        else:
+            image_path = os.path.join(images_folder, os.path.basename(extr.name))
         image_name = os.path.basename(image_path).split(".")[0]
         image = Image.open(image_path)
         image = PILtoTorch(image,None)
