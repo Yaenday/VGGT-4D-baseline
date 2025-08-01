@@ -54,7 +54,8 @@ def load_from_glb(root: Path, max_points: int = 100000):
     extrinsics = []
     from scipy.spatial.transform import Rotation as R
     for line in traj_path.read_text().strip().splitlines():
-        ts, tx, ty, tz, qx, qy, qz, qw = map(float, line.split())
+        # ts, tx, ty, tz, qx, qy, qz, qw = map(float, line.split())
+        ts, tx, ty, tz, qw, qx, qy, qz = map(float, line.split())
         Rmat = R.from_quat([qx, qy, qz, qw]).as_matrix()
         t = np.array([tx, ty, tz])
         extrinsics.append(np.hstack([Rmat, t.reshape(-1, 1)]))
