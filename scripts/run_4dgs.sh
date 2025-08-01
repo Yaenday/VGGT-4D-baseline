@@ -20,7 +20,7 @@ OUTPUT_ROOT="./output/${EXP_NAME}"
 DATASETS=("nerfie" "nvidia")
 
 # 定义 GPU 列表
-GPUS=(1 2 3)
+GPUS=(1 2 3 4 5)
 NUM_GPUS=${#GPUS[@]}
 
 # 获取所有场景
