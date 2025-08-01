@@ -21,6 +21,8 @@ import argparse
 from pathlib import Path
 import trimesh
 import pycolmap
+# Add cv2 for image saving
+import cv2
 
 
 from vggt.models.vggt import VGGT
@@ -59,6 +61,7 @@ def parse_args():
     parser.add_argument(
         "--conf_thres_value", type=float, default=5.0, help="Confidence threshold value for depth filtering (wo BA)"
     )
+    parser.add_argument("--save_depth", action="store_true", default=True, help="Save depth maps to disk")
     return parser.parse_args()
 
 
@@ -138,6 +141,25 @@ def demo_fn(args):
     # Run with 518x518 images
     extrinsic, intrinsic, depth_map, depth_conf = run_VGGT(model, images, dtype, vggt_fixed_resolution)
     points_3d = unproject_depth_map_to_point_map(depth_map, extrinsic, intrinsic)
+    
+    if args.save_depth:
+        # Save depth maps to args.scene_dir/depth with the same names as images
+        depth_dir = os.path.join(args.scene_dir, "depth")
+        os.makedirs(depth_dir, exist_ok=True)
+        
+        # Normalize depth maps for visualization
+        for i, image_name in enumerate(base_image_path_list):
+            # Get the depth map for this image
+            depth = depth_map[i].squeeze()  # Remove the last dimension (518, 518, 1) -> (518, 518)
+            
+            # Normalize depth map to 0-255 range for saving as PNG
+            depth_normalized = ((depth - depth.min()) / (depth.max() - depth.min()) * 255).astype(np.uint8)
+            
+            # Save depth map as PNG
+            depth_path = os.path.join(depth_dir, os.path.splitext(image_name)[0] + ".png")
+            cv2.imwrite(depth_path, depth_normalized)
+        
+        print(f"Saved depth maps to {depth_dir}")
 
     if args.use_ba:
         image_size = np.array(images.shape[-2:])
